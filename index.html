@@ -20,7 +20,7 @@
     <audio src="sounds/tom.wav" data-key="k"></audio>
     <audio src="sounds/tink.wav" data-key="l"></audio>
     <script>
-       let keys=['a','s','d','f','g','h','j','k','l']
+             let keys=['a','s','d','f','g','h','j','k','l']
        let hash={ a:'clap',s:'hihat',d:'kick',f:'openhat',g:'boom',h:'ride',j:'snake',k:'tom',l:'tink'}
        index=0
        while(index<keys['length']){// 0 1 2
@@ -45,14 +45,18 @@
            audio.play()
            key.classList.add('playing')
        }
-       //stop animating when keyup
-       function removePlaying(e){
-        const key=document.querySelector(`.key[data-key="${e.key}"`)
-          key.classList.remove('playing')
-       }
-       //listen to keydown event and keyup event
+  
+      //stop animating when transitionend
+      function removePlaying(e){
+        if(e.propertyName!=='transform') return;
+        this.classList.remove('playing')
+      }
+      //keyAll points transitionevents
+      const keyAll=document.querySelectorAll('.key')
+       //listen to keydown event event
      window.addEventListener('keydown',playMusic)
-    window.addEventListener('keyup',removePlaying)
+    //in keyAll (transitionevents)search for key,listen to transitionend event
+    keyAll.forEach(key=>key.addEventListener('transitionend',removePlaying))
     </script>
 </body>
 </html>
